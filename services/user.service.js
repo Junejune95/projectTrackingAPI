@@ -139,7 +139,7 @@ exports.getUserService = async ({
           image: 1,
           address: 1,
           phoneNumber: 1,
-          companyName
+          companyInfo:1
         },
       },
       {
