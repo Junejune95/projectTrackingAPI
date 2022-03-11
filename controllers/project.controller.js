@@ -1,34 +1,26 @@
-const fs = require('fs');
-const Jimp = require('jimp');
-const path = require('path');
+const fs = require("fs");
+const Jimp = require("jimp");
+const path = require("path");
 const {
   createProjectService,
   getProjectService,
   updateProjectService,
   detailProjectService,
   deleteProjectService,
-} = require('../services/project.service');
+} = require("../services/project.service");
 exports.createProjectController = async (req, res, next) => {
-  let {
-    basicInfo
-  } = req.body;
+  let { basicInfo } = req.body;
   try {
-    const{
-      name,
-      startDate,
-      targetEndDate,
-      budget,
-      status,
-      projectOwner
-    }=basicInfo;
+    const { name, startDate, targetEndDate, budget, status, projectOwner } =
+      basicInfo;
 
-   const response =await createProjectService({
+    const response = await createProjectService({
       name,
       startDate,
       targetEndDate,
       budget,
       status,
-      projectOwner
+      projectOwner,
     });
     res.status(200).send(response);
   } catch (error) {
@@ -37,11 +29,7 @@ exports.createProjectController = async (req, res, next) => {
 };
 exports.getProjectController = async (req, res, next) => {
   try {
-    const {
-      search,
-      page = '1',
-      limit = '10',
-    } = req.query;
+    const { search, page = "1", limit = "10" } = req.query;
     let response = await getProjectService({
       search,
       page,
@@ -53,16 +41,15 @@ exports.getProjectController = async (req, res, next) => {
   }
 };
 exports.updateProjectController = async (req, res, next) => {
-  let {
-    features,phases,projectId
-  } = { ...req.body, ...req.params };
+  let { features=[], phases=[], projectId } = { ...req.body, ...req.params };
   try {
-   console.log(features,phases);
+    console.log(features, phases);
     await updateProjectService({
-      features,phases,
-      projectId
+      features,
+      phases,
+      projectId,
     });
-    res.status(200).send({ message: 'Successfully Updated' });
+    res.status(200).send({ message: "Successfully Updated" });
   } catch (error) {
     next(error);
   }
@@ -84,9 +71,8 @@ exports.deleteProjectController = async (req, res, next) => {
     await deleteProjectService({
       projectId,
     });
-    res.status(200).send({ message: 'Successfully Deleted' });
+    res.status(200).send({ message: "Successfully Deleted" });
   } catch (error) {
     next(error);
   }
 };
-
