@@ -148,6 +148,7 @@ exports.updateProjectService = async ({ features, phases, projectId }) => {
         { projectId: ObjectId(projectId) },
         { _id: 1, name: 1 }
       );
+      console.log(features);
     }
     if (phases.length) {
       phases = phases.map((phase) => {
@@ -157,9 +158,11 @@ exports.updateProjectService = async ({ features, phases, projectId }) => {
       await Phase.insertMany(phases);
     }
 
-    return features.length
-      ? { message: "Succesfully Updated", features }
+     const response = features.length
+      ?  { message: "Succesfully Updated", features }
       : { message: "Succesfully Updated" };
+      console.log(response," ",features);
+      return response;
   } catch (error) {
     console.log(error);
     throw error;

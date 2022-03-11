@@ -44,12 +44,12 @@ exports.updateProjectController = async (req, res, next) => {
   let { features=[], phases=[], projectId } = { ...req.body, ...req.params };
   try {
     console.log(features, phases);
-    await updateProjectService({
+    const response = await updateProjectService({
       features,
       phases,
       projectId,
     });
-    res.status(200).send({ message: "Successfully Updated" });
+    res.status(200).send(response);
   } catch (error) {
     next(error);
   }
