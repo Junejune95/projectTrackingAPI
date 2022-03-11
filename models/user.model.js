@@ -13,7 +13,11 @@ const schema = {
   address: String, //optional
   phoneNumber: String, //optional
   password: String,
-  companyName: String,
+  companyInfo: {
+    companyName:String,
+    address:String,
+    phoneNumber:String
+  },
 };
 const UserSchema = new Schema(schema, {
   timestamps: {

@@ -15,12 +15,12 @@ exports.createUserService = async ({
   address,
   phoneNumber,
   password,
-  companyName
+  companyInfo
 }) => {
   try {
     students = students.split(',');
     let oldUser = await User.findOne({ email: email });
-    console.log('checking ', oldUser);
+    companyInfo = JSON.parse(companyInfo)
     if (oldUser) {
       let duplicateError = new Error('Already exist with this email');
       duplicateError.status = 400;
@@ -35,7 +35,7 @@ exports.createUserService = async ({
         address,
         phoneNumber,
         password,
-        companyName
+        companyInfo
       });
       user.password = await updateHash(password);
       await user.save();
@@ -58,7 +58,6 @@ exports.getUserService = async ({
 }) => {
   try {
     sortDirection = sortDirection === 'desc' ? -1 : 1;
-    role = role.toUpperCase() == 'STUDENT AFFAIR' ? 'Student Affair' : role;
     page = parseInt(page);
     limit = parseInt(limit);
     const skip = (page - 1) * limit;
@@ -122,11 +121,11 @@ exports.getUserService = async ({
       };
     }
     let result = await User.aggregate([
-      {
-        $match: {
-          role: role,
-        },
-      },
+      // {
+      //   $match: {
+      //     role: role,
+      //   },
+      // },
       searchQuery,
       sortQuery,
       {
@@ -177,11 +176,12 @@ exports.updateUserService = async ({
   address,
   phoneNumber,
   password,
-  companyName,
+  companyInfo,
   userId
 }) => {
   try {
     students = students ? students.split(',') : [];
+    companyInfo = JSON.parse(companyInfo)
     let updateData = image
       ? {
         username,
@@ -192,7 +192,7 @@ exports.updateUserService = async ({
         address,
         phoneNumber,
         password,
-        companyName
+        companyInfo
         }
       : {
         username,
@@ -202,7 +202,7 @@ exports.updateUserService = async ({
         address,
         phoneNumber,
         password,
-        companyName
+        companyInfo
         };
     let updateUser = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
@@ -236,7 +236,7 @@ exports.detailUserService = async ({ userId }) => {
           address:1,
           phoneNumber:1,
           password:1,
-          companyName:1
+          companyInfo:1
         },
       },
     ]).exec();

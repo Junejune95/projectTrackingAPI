@@ -7,16 +7,7 @@ const {
   updateUserService,
   detailUserService,
   deleteUserService,
-  createStudentService,
   loginService,
-  getStudentService,
-  detailStudentService,
-  getParentHomeService,
-  getAdminHomePaymentInfoService,
-  getTeacherAssements,
-  getTeacherAssementScoresService,
-  getTeacherTimelineSevice,
-  getParentChild,
 } = require('../services/user.service');
 exports.createUserController = async (req, res, next) => {
   let {
@@ -28,7 +19,7 @@ exports.createUserController = async (req, res, next) => {
     address,
     phoneNumber,
     password,
-    companyName
+    companyInfo
   } = req.body;
   try {
     var imagepath = path.join(__dirname, '../public/uploads/profileImage/');
@@ -64,7 +55,8 @@ exports.createUserController = async (req, res, next) => {
       address,
       phoneNumber,
       password,
-      companyName
+      companyInfo,
+
     });
     res.status(200).send({ message: 'Successfully Created' });
   } catch (error) {
@@ -101,7 +93,7 @@ exports.updateUserController = async (req, res, next) => {
     address,
     phoneNumber,
     password,
-    companyName,
+    companyInfo,
     userId
   } = { ...req.body, ...req.params };
   try {
@@ -138,7 +130,7 @@ exports.updateUserController = async (req, res, next) => {
       address,
       phoneNumber,
       password,
-      companyName,
+      companyInfo,
       userId
     });
     res.status(200).send({ message: 'Successfully Updated' });
