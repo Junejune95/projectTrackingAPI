@@ -18,7 +18,6 @@ exports.createUserService = async ({
   companyInfo
 }) => {
   try {
-    students = students.split(',');
     let oldUser = await User.findOne({ email: email });
     companyInfo = JSON.parse(companyInfo)
     if (oldUser) {
@@ -39,10 +38,6 @@ exports.createUserService = async ({
       });
       user.password = await updateHash(password);
       await user.save();
-      if (role == 'Parent') {
-        students = students.map((student) => ObjectId(student));
-        await User.updateMany({ _id: { $in: students } }, { parent: user._id });
-      }
       return { message: 'Successfully created' };
     }
   } catch (error) {
@@ -180,7 +175,6 @@ exports.updateUserService = async ({
   userId
 }) => {
   try {
-    students = students ? students.split(',') : [];
     companyInfo = JSON.parse(companyInfo)
     let updateData = image
       ? {
