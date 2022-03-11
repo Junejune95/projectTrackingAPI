@@ -130,8 +130,6 @@ exports.getProjectService = async ({ search, page, limit }) => {
     const { projects, totalCount } = result[0];
     response.projects = projects;
     response.totalCount = totalCount[0] ? totalCount[0].count : 0;
-    response.sortColumn = sortColumn;
-    response.sortDirection = sortDirection === -1 ? "desc" : "asc";
     return response;
   } catch (error) {
     throw error;
