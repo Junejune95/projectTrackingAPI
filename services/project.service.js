@@ -91,7 +91,7 @@ exports.getProjectService = async ({ search, page, limit }) => {
                     },
                   },
                 ],
-                as: "feature",
+                as: "features",
               },
             },
           ],
@@ -109,7 +109,7 @@ exports.getProjectService = async ({ search, page, limit }) => {
           budget:1,
           status:1,
           projectOwner:1,
-          phase:1
+          phases:'$phase'
         },
       },
       {
@@ -144,7 +144,7 @@ exports.updateProjectService = async ({ features, phases, projectId }) => {
         return feature;
       });
       await Feature.insertMany(features);
-      features = Feature.find(
+      features =await Feature.find(
         { projectId: ObjectId(projectId) },
         { _id: 1, name: 1 }
       );
