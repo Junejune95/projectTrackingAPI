@@ -57,7 +57,7 @@ exports.updateProjectController = async (req, res, next) => {
     features,phases,projectId
   } = { ...req.body, ...req.params };
   try {
-   
+   console.log(features,phases);
     await updateProjectService({
       features,phases,
       projectId

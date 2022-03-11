@@ -137,15 +137,12 @@ exports.getProjectService = async ({ search, page, limit }) => {
 };
 exports.updateProjectService = async ({ features, phases, projectId }) => {
   try {
-    features = features.map((feature) => {
-      feature.projectId = projectId;
-      return feature;
-    });
-    phases = phases.map((phase) => {
-      phase.projectId = projectId;
-      return phase;
-    });
+
     if (features.length) {
+      features = features.map((feature) => {
+        feature.projectId = projectId;
+        return feature;
+      });
       await Feature.insertMany(features);
       features = Feature.find(
         { projectId: ObjectId(projectId) },
@@ -153,6 +150,10 @@ exports.updateProjectService = async ({ features, phases, projectId }) => {
       );
     }
     if (phases.length) {
+      phases = phases.map((phase) => {
+        phase.projectId = projectId;
+        return phase;
+      });
       await Phase.insertMany(phases);
     }
 
