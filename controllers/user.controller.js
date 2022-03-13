@@ -65,20 +65,8 @@ exports.createUserController = async (req, res, next) => {
 };
 exports.getUserController = async (req, res, next) => {
   try {
-    const {
-      search,
-      page = '1',
-      limit = '10',
-      sortColumn = 'createdDate',
-      sortDirection = 'desc',
-    } = req.query;
-    let response = await getUserService({
-      search,
-      page,
-      limit,
-      sortColumn,
-      sortDirection,
-    });
+
+    let response = await getUserService();
     res.status(200).json(response);
   } catch (error) {
     next(error);

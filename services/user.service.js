@@ -44,85 +44,72 @@ exports.createUserService = async ({
     throw error;
   }
 };
-exports.getUserService = async ({
-  search,
-  page,
-  limit,
-  sortColumn,
-  sortDirection,
-}) => {
+exports.getUserService = async () => {
   try {
-    sortDirection = sortDirection === 'desc' ? -1 : 1;
-    page = parseInt(page);
-    limit = parseInt(limit);
-    const skip = (page - 1) * limit;
-    let searchQuery = {
-      $match: {},
-    };
-    if (search) {
-      searchQuery = {
-        $match: {
-          $or: [
-            {
-              username: {
-                $regex: search,
-                $options: 'i',
-              },
-            },
-            {
-              email: {
-                $regex: search,
-                $options: 'i',
-              },
-            },
-            {
-              phoneNumber: {
-                $regex: search,
-                $options: 'i',
-              },
-            },
-          ],
-        },
-      };
-    }
-    let sortQuery = {
-      $sort: {
-        createdDate: -1,
-      },
-    };
-    if (sortColumn === 'username') {
-      sortQuery = {
-        $sort: {
-          username: sortDirection,
-        },
-      };
-    } else if (sortColumn === 'email') {
-      sortQuery = {
-        $sort: {
-          email: sortDirection,
-        },
-      };
-    } else if (sortColumn === 'createdDate') {
-      sortQuery = {
-        $sort: {
-          createdDate: sortDirection,
-        },
-      };
-    } else if (sortColumn === 'phoneNumber') {
-      sortQuery = {
-        $sort: {
-          phoneNumber: sortDirection,
-        },
-      };
-    }
+    // sortDirection = sortDirection === 'desc' ? -1 : 1;
+    // page = parseInt(page);
+    // limit = parseInt(limit);
+    // const skip = (page - 1) * limit;
+    // let searchQuery = {
+    //   $match: {},
+    // };
+    // if (search) {
+    //   searchQuery = {
+    //     $match: {
+    //       $or: [
+    //         {
+    //           username: {
+    //             $regex: search,
+    //             $options: 'i',
+    //           },
+    //         },
+    //         {
+    //           email: {
+    //             $regex: search,
+    //             $options: 'i',
+    //           },
+    //         },
+    //         {
+    //           phoneNumber: {
+    //             $regex: search,
+    //             $options: 'i',
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   };
+    // }
+    // let sortQuery = {
+    //   $sort: {
+    //     createdDate: -1,
+    //   },
+    // };
+    // if (sortColumn === 'username') {
+    //   sortQuery = {
+    //     $sort: {
+    //       username: sortDirection,
+    //     },
+    //   };
+    // } else if (sortColumn === 'email') {
+    //   sortQuery = {
+    //     $sort: {
+    //       email: sortDirection,
+    //     },
+    //   };
+    // } else if (sortColumn === 'createdDate') {
+    //   sortQuery = {
+    //     $sort: {
+    //       createdDate: sortDirection,
+    //     },
+    //   };
+    // } else if (sortColumn === 'phoneNumber') {
+    //   sortQuery = {
+    //     $sort: {
+    //       phoneNumber: sortDirection,
+    //     },
+    //   };
+    // }
     let result = await User.aggregate([
-      // {
-      //   $match: {
-      //     role: role,
-      //   },
-      // },
-      searchQuery,
-      sortQuery,
       {
         $project: {
           _id: 0,
@@ -137,26 +124,11 @@ exports.getUserService = async ({
           companyInfo:1
         },
       },
-      {
-        $facet: {
-          users: [
-            { $skip: parseInt(skip, 10) },
-            { $limit: parseInt(limit, 10) },
-          ],
-          totalCount: [
-            {
-              $count: 'count',
-            },
-          ],
-        },
-      },
     ]);
     let response = {};
-    const { users, totalCount } = result[0];
-    response.users = users;
-    response.totalCount = totalCount[0] ? totalCount[0].count : 0;
-    response.sortColumn = sortColumn;
-    response.sortDirection = sortDirection === -1 ? 'desc' : 'asc';
+    // const { users, totalCount } = result[0];
+    response.users = result;
+    response.totalCount = result.length;
     return response;
   } catch (error) {
     throw error;
